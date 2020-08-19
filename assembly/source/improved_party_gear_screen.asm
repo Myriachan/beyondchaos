@@ -47,7 +47,7 @@ member_loop:
 	phy
 	lda.b #$24
 	sta.b $29
-	jsr $C334CF & $FFFF
+	jsr.w $C334CF
 	ply
 
 	// Palette for slot name.
@@ -77,9 +77,9 @@ member_loop:
 	// Copy fixed-size string to write buffer.
 	// A = index of fixed-size string, just set.
 	phy
-	jsr $C38467 & $FFFF
+	jsr.w $C38467
 	// Draw write buffer to tilemap.
-	jsr $C37FD9 & $FFFF
+	jsr.w $C37FD9
 	ply
 	
 special_character:	
@@ -95,7 +95,7 @@ special_character:
 	tay
 	sep #$20
 	// This routine wants the actor address in D+$67 and tilemap in Y.
-	jsr $C334E6 & $FFFF
+	jsr.w $C334E6
 	
 no_esper:
 	// Reset palette to normal.
@@ -109,7 +109,7 @@ no_esper:
 	asl
 	asl
 	adc.b #$04
-	jsr $C38F8A & $FFFF
+	jsr.w $C38F8A
 	
 	// Next party member.
 nobody:
@@ -120,10 +120,10 @@ nobody:
 	bne member_loop
 
 	// Do stuff from the original code after the menu draws.
-	jsr $C30E28 & $FFFF
-	jsr $C30E36 & $FFFF
-	jsr $C36A3C & $FFFF
-	jmp $C30E6E & $FFFF
+	jsr.w $C30E28
+	jsr.w $C30E36
+	jsr.w $C36A3C
+	jmp.w $C30E6E
 }
 
 warnpc($C38F8A)
