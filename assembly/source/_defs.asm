@@ -175,6 +175,10 @@ constant music_disable_C3_size                              = $00A0
 constant bank_F0_start                                      = $F00000
 constant natmag_learn_start                                 = $F0084B
 constant natmag_learn_size                                  = $00A0 + (2 * 16 * 12)
+constant show_original_names_start                          = $F00735
+constant show_original_names_size                           = $00A6
+constant original_name_table_start                          = $F007DB
+constant original_name_table_size                           = 14 * 8
 
 // --- MEMORY MAP - BANK FF ---
 constant bank_FF_start                                      = $FF0000

@@ -9,6 +9,8 @@ improved_party_gear_screen
 learn_hacks
 music_disable_option
 natmag_learn
+original_name_table
 randomize_final_party_order
+show_original_names
 sketch_fix
 ungray_statscreen

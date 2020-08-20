@@ -4496,7 +4496,10 @@ def randomize(args):
     print(
         "\nNow beginning randomization.\n"
         "The randomization is very thorough, so it may take some time.\n"
-        'Please be patient and wait for "randomization successful" to appear.')
+        'Please be patient and wait for "randomization successful" to appear.') 
+
+    # Assembly hacks that are always enabled, and library routines.
+    apply_asm_patch(fout, "original_name_table")
 
     if options_.is_code_active("thescenarionottaken"):
         diverge(fout)
@@ -4611,7 +4614,7 @@ def randomize(args):
             ['partyparty', 'bravenudeworld', 'suplexwrecks',
              'christmas', 'halloween', 'kupokupo', 'quikdraw', 'makeover']):
         manage_character_appearance(fout, preserve_graphics=preserve_graphics)
-        show_original_names(fout)
+        show_original_names(fout, use_new_asm)
     reseed()
 
     if options_.random_character_stats:
