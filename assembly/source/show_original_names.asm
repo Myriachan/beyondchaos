@@ -125,11 +125,10 @@ function hook_thunk {
 
 // Finally, the main routine.
 function main_routine {
-	// Subtract 22-byte offset from character data address.
-	// FIXME: Shouldn't this be a 16-bit subtract?
+	// Subtract $1600 from the character data address to get the offset.
 	lda.b $09
 	sec
-	sbc.b #22
+	sbc.b #$16
 	sta.b $09
 	// Divide by the size of the character data (37) to get character number.
 	ldx.b $08
