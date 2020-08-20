@@ -509,63 +509,7 @@ def manage_commands(commands):
     # Dances can be learned by anyone.
     # Bushido and Blitz can be learned by anyone reaching those levels.
     # Handle multiple of these happening together in one battle.
-    if use_new_asm:
-        apply_asm_patch(fout, "learn_hacks")
-    else:
-        learn_lore_sub = Substitution()
-        learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
-        learn_lore_sub.set_location(0x236E4)
-        learn_lore_sub.write(fout)
-
-        learn_dance_sub = Substitution()
-        learn_dance_sub.bytestring = bytes([0xEA] * 2)
-        learn_dance_sub.set_location(0x25EE8)
-        learn_dance_sub.write(fout)
-
-        learn_swdtech_sub = Substitution()
-        learn_swdtech_sub.bytestring = bytes([0xEB,       # XBA
-                                              0x48,       # PHA
-                                              0xEB,       # XBA
-                                              0xEA])
-        learn_swdtech_sub.set_location(0x261C7)
-        learn_swdtech_sub.write(fout)
-        learn_swdtech_sub.bytestring = bytes([0x4C, 0xDA, 0xA1, 0x60])
-        learn_swdtech_sub.set_location(0xA18A)
-        learn_swdtech_sub.write(fout)
-
-        learn_blitz_sub = Substitution()
-        learn_blitz_sub.bytestring = bytes([0xF0, 0x09])
-        learn_blitz_sub.set_location(0x261CE)
-        learn_blitz_sub.write(fout)
-        learn_blitz_sub.bytestring = bytes([0xD0, 0x04])
-        learn_blitz_sub.set_location(0x261D3)
-        learn_blitz_sub.write(fout)
-        learn_blitz_sub.bytestring = bytes([0x68,       # PLA
-                                            0xEB,       # XBA
-                                            0xEA, 0xEA, 0xEA, 0xEA, 0xEA])
-        learn_blitz_sub.set_location(0x261D9)
-        learn_blitz_sub.write(fout)
-        learn_blitz_sub.bytestring = bytes([0xEA] * 4)
-        learn_blitz_sub.set_location(0x261E3)
-        learn_blitz_sub.write(fout)
-        learn_blitz_sub.bytestring = bytes([0xEA])
-        learn_blitz_sub.set_location(0xA200)
-        learn_blitz_sub.write(fout)
-
-        learn_multiple_sub = Substitution()
-        learn_multiple_sub.set_location(0xA1B4)
-        reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
-        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-        learn_multiple_sub.write(fout)
-
-        learn_multiple_sub.set_location(0xA1D6)
-        reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
-        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-        learn_multiple_sub.write(fout)
-
-        learn_multiple_sub.set_location(0x261DD)
-        learn_multiple_sub.bytestring = bytes([0xEA] * 3)
-        learn_multiple_sub.write(fout)
+    apply_asm_patch(fout, "learn_hacks")
 
     # Start with only one Rage.
     rage_blank_sub = Substitution()
@@ -573,32 +517,10 @@ def manage_commands(commands):
     rage_blank_sub.set_location(0x47AA0)
     rage_blank_sub.write(fout)
 
-    if use_new_asm:
-        apply_asm_patch(fout, "enable_esper_magic")
-    else:
-        eems = EnableEsperMagicSub()
-        eems.set_location(0x3F091)
-        eems.write(fout)
+    apply_asm_patch(fout, "enable_esper_magic")
 
     # Let X-Magic users use out-of-battle Magic menu.
-    if use_new_asm:
-        apply_asm_patch(fout, "enable_xmagic_menu")
-    else:
-        enable_xmagic_menu_sub = Substitution()
-        enable_xmagic_menu_sub.bytestring = bytes([
-            0xDF, 0x78, 0x4D, 0xC3, # CMP $C34D78,X
-            0xF0, 0x07, # BEQ
-            0xE0, 0x01, 0x00, # CPX #$0001
-            0xD0, 0x02, # BNE
-            0xC9, 0x17, # CMP #$17
-            0x6b        # RTL
-        ])
-        enable_xmagic_menu_sub.set_location(0x3F09B)
-        enable_xmagic_menu_sub.write(fout)
-
-        enable_xmagic_menu_sub.bytestring = bytes([0x22, 0x9B, 0xF0, 0xC3])
-        enable_xmagic_menu_sub.set_location(0x34d56)
-        enable_xmagic_menu_sub.write(fout)
+    apply_asm_patch(fout, "enable_xmagic_menu")
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()
@@ -607,36 +529,13 @@ def manage_commands(commands):
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(fout)
 
-    if use_new_asm:
-        apply_asm_patch(fout, "enable_morph")
-        apply_asm_patch(fout, "enable_mpoint")
-        apply_asm_patch(fout, "ungray_statscreen")
-    else:
-        enable_morph_sub = Substitution()
-        enable_morph_sub.bytestring = bytes([0xEA] * 2)
-        enable_morph_sub.set_location(0x25410)
-        enable_morph_sub.write(fout)
+    apply_asm_patch(fout, "enable_morph")
+    apply_asm_patch(fout, "enable_mpoint")
+    apply_asm_patch(fout, "ungray_statscreen")
 
-        enable_mpoint_sub = Substitution()
-        enable_mpoint_sub.bytestring = bytes([0xEA] * 2)
-        enable_mpoint_sub.set_location(0x25E38)
-        enable_mpoint_sub.write(fout)
-
-        ungray_statscreen_sub = Substitution()
-        ungray_statscreen_sub.bytestring = bytes([0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA, 0xEA, 0xEA])
-        ungray_statscreen_sub.set_location(0x35EE1)
-        ungray_statscreen_sub.write(fout)
-
-    if use_new_asm:
-        fanatics_fix = get_asm_patch("fanatics_fix")
-        fanatics_fix.write(fout)
-        fanatics_fix_command_offset = fanatics_fix.exports["replacement_command"] - HIROM
-    else:
-        fanatics_fix_sub = Substitution()
-        fanatics_fix_sub.bytestring = bytes([0xA9])
-        fanatics_fix_sub.set_location(0x2537E)
-        fanatics_fix_sub.write(fout)
-        fanatics_fix_command_offset = 0x2537E + 1
+    fanatics_fix = get_asm_patch("fanatics_fix")
+    fanatics_fix.write(fout)
+    fanatics_fix_command_offset = fanatics_fix.exports["replacement_command"] - HIROM
 
     fanatics_fix_command_sub = Substitution()
     magitekcmd = [c for c in commands.values() if c.name == "magitek"][0]
@@ -1221,25 +1120,9 @@ def manage_natural_magic():
     except ValueError:
         return
 
-    if use_new_asm:
-        natmag_learn = get_asm_patch("natmag_learn")
-        natmag_learn.write(fout)
-        natmag_learn_table = natmag_learn.exports["magic_table"] - HIROM
-    else:
-        natmag_learn_sub = Substitution()
-        natmag_learn_sub.set_location(0xa182)
-        natmag_learn_sub.bytestring = bytes([0x22, 0x73, 0x08, 0xF0] + [0xEA] * 4)
-        natmag_learn_sub.write(fout)
-
-        natmag_learn_sub.set_location(0x261b6)
-        natmag_learn_sub.bytestring = bytes([0x22, 0x4B, 0x08, 0xF0] + [0xEA] * 10)
-        natmag_learn_sub.write(fout)
-
-        natmag_learn_sub.set_location(0x30084B)
-        natmag_learn_sub.bytestring = bytes([0xC9, 0x0C, 0xB0, 0x23, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0xEB, 0x48, 0x85, 0x0B, 0xAE, 0xF4, 0x00, 0x86, 0x09, 0x7B, 0xEB, 0xA9, 0x80, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x68, 0xEB, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xC9, 0x0C, 0xB0, 0xFB, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0x8D, 0x02, 0x42, 0xA9, 0x36, 0x8D, 0x03, 0x42, 0xB9, 0x08, 0x16, 0x85, 0x0B, 0xC2, 0x20, 0xAD, 0x16, 0x42, 0x18, 0x69, 0x6E, 0x1A, 0x85, 0x09, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xA9, 0xFF, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xA0, 0x10, 0x00, 0xA5, 0x08, 0xC2, 0x20, 0x29, 0xFF, 0x00, 0xEB, 0x4A, 0x4A, 0x4A, 0xAA, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xBF, 0xE1, 0x08, 0xF0, 0xC5, 0x0B, 0xF0, 0x02, 0xB0, 0x11, 0x5A, 0xBF, 0xE0, 0x08, 0xF0, 0xA8, 0xB1, 0x09, 0xC9, 0xFF, 0xF0, 0x04, 0xA5, 0x0C, 0x91, 0x09, 0x7A, 0xE8, 0xE8, 0x88, 0xD0, 0xE0, 0x6B] + [0xFF] * 2 * 16 * 12)
-        natmag_learn_sub.write(fout)
-
-        natmag_learn_table = 0x3008e0
+    natmag_learn = get_asm_patch("natmag_learn")
+    natmag_learn.write(fout)
+    natmag_learn_table = natmag_learn.exports["magic_table"] - HIROM
 
     spells = get_ranked_spells(sourcefile, magic_only=True)
     spellids = [s.spellid for s in spells]
@@ -1726,18 +1609,7 @@ def manage_balance(newslots=True):
     sealed_kefka = get_monster(0x174)
 
     if not options_.is_code_active('sketch'):
-        if use_new_asm:
-            apply_asm_patch(fout, "sketch_fix")
-        else:
-            sketch_fix_sub = Substitution()
-            sketch_fix_sub.set_location(0x2F5C6)
-            sketch_fix_sub.bytestring = bytes([
-                0x80, 0xCA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0x4C, 0x09, 0xF8,
-                0xA0, 0x00, 0x28, 0x22, 0x09, 0xB1, 0xC1, 0xA9, 0x01, 0x1C, 0x8D, 0x89, 0xA0, 0x03, 0x00,
-                0xB1, 0x76, 0x0A, 0xAA, 0xC2, 0x20, 0xBD, 0x01, 0x20, 0x90, 0x02,
-                0x7B, 0x3A, 0xAA, 0x7B, 0xE2, 0x20, 0x22, 0xD1, 0x24, 0xC1, 0x80, 0xD7,
-            ])
-            sketch_fix_sub.write(fout)
+        apply_asm_patch(fout, "sketch_fix")
 
 
 def manage_magitek():
@@ -1990,55 +1862,7 @@ def manage_items(items, changed_commands=None):
 
     assert(auto_equip_relics)
 
-    if use_new_asm:
-        apply_asm_patch(fout, "auto_equip")
-    else:
-        auto_equip_sub = Substitution()
-        auto_equip_sub.set_location(0x39EF9)
-        auto_equip_sub.bytestring = bytes([0xA0, 0xF1,])
-        auto_equip_sub.write(fout)
-
-        auto_equip_sub.set_location(0x3F1A0)
-        auto_equip_sub.bytestring = bytes([
-            0x20, 0xF2, 0x93,
-            0xB9, 0x23, 0x00,
-            0xC5, 0xB0,
-            0xD0, 0x09,
-            0xB9, 0x24, 0x00,
-            0xC5, 0xB1,
-            0xD0, 0x02,
-            0x80, 0x4C,
-            0x64, 0x99,
-            0xA5, 0xB0,
-            0x20, 0x21, 0x83,
-            0xAE, 0x34, 0x21,
-            0xBF, 0x0C, 0x50, 0xD8,
-            0x29, 0x38,
-            0x85, 0xFE,
-            0xA5, 0xB1,
-            0x20, 0x21, 0x83,
-            0xAE, 0x34, 0x21,
-            0xBF, 0x0C, 0x50, 0xD8,
-            0x29, 0x38,
-            0x04, 0xFE,
-            0xB9, 0x23, 0x00,
-            0x20, 0x21, 0x83,
-            0xAE, 0x34, 0x21,
-            0xBF, 0x0C, 0x50, 0xD8,
-            0x29, 0x38,
-            0x85, 0xFF,
-            0xB9, 0x24, 0x00,
-            0x20, 0x21, 0x83,
-            0xAE, 0x34, 0x21,
-            0xBF, 0x0C, 0x50, 0xD8,
-            0x29, 0x38,
-            0x04, 0xFF,
-            0xA5, 0xFE,
-            0xC5, 0xFF,
-            0xF0, 0x02,
-            0xE6, 0x99,
-            0x60])
-        auto_equip_sub.write(fout)
+    apply_asm_patch(fout, "auto_equip")
 
     return items
 
@@ -3396,45 +3220,7 @@ def create_dimensional_vortex():
 
 
 def randomize_final_party_order():
-    if use_new_asm:
-        apply_asm_patch(fout, "randomize_final_party_order")
-    else:
-        code = bytes([
-            0x20, 0x99, 0xAA,       # JSR $AA99
-            0xA9, 0x00,             # LDA #00
-            0xA8,                   # TAY
-            0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
-            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-            0x8D, 0x6D, 0x1F,       # STA $1F6D
-            # 21 bytes
-            0xEE, 0x6D, 0x1F,       # INC $1F6D
-            0xAD, 0x6D, 0x1F,       # LDA $1F6D
-            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-            0xAA,                   # TAX
-            0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
-            0x29, 0x0F,             # AND $0F, Get bottom 4 bits
-            0xC9, 0x0B,             # CMP $0B
-            0xB0, 0xEC,             # BCS 20 bytes back
-            0xAA,                   # TAX
-
-            # 14 bytes
-            0xB9, 0x05, 0x02,       # LDA $0205,Y
-            0x48,                   # PHA
-            0xBD, 0x05, 0x02,       # LDA $0205,X
-            0x99, 0x05, 0x02,       # STA $0205,Y
-            0x68,                   # PLA
-            0x9D, 0x05, 0x02,       # STA $0205,X
-
-            # 6 bytes
-            0xC8,                   # INY
-            0x98,                   # TYA
-            0xC9, 0x0C,             # CMP $0C
-            0x90, 0xD7,             # BCC 41 bytes back
-
-            0x60,                   # RTS
-        ])
-        fout.seek(0x3AA25)
-        fout.write(code)
+    apply_asm_patch(fout, "randomize_final_party_order")
 
 
 def dummy_item(item):
@@ -4615,7 +4401,7 @@ def randomize(args):
             ['partyparty', 'bravenudeworld', 'suplexwrecks',
              'christmas', 'halloween', 'kupokupo', 'quikdraw', 'makeover']):
         manage_character_appearance(fout, preserve_graphics=preserve_graphics)
-        show_original_names(fout, use_new_asm)
+        show_original_names(fout)
     reseed()
 
     if options_.random_character_stats:
