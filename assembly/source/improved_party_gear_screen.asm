@@ -4,9 +4,6 @@ architecture wdc65816
 include "_defs.asm"
 
 
-constant slot_name_table = $F007DB
-
-
 reorg($C38F04)
 function party_gear_hack {
 	// Start at first slot.
@@ -62,10 +59,10 @@ member_loop:
 	// Set up parameters for fixed-size table.
 	lda.w #8
 	sta.b $EB
-	lda.w #slot_name_table & $FFFF
+	lda.w #original_name_table_start & $FFFF
 	sta.b $EF
 	sep #$20
-	lda.b #slot_name_table >> 16
+	lda.b #original_name_table_start >> 16
 	sta.b $F1
 
 	// Get back the character ID.
