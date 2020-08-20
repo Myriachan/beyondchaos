@@ -240,6 +240,7 @@ NORMAL_CODES = [
     Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", "Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.", "minor"),
     Code('johnnydmad', "MUSIC REPLACEMENT MODE", "Randomizes music with regard to what would make sense in a given location.", "aesthetic"),
     Code('johnnyachaotic', "MUSIC MANGLING MODE", "Randomizes music with no regard to what would make sense in a given location.", "aesthetic"),
+    Code('johnnybquiet', "MUSIC OFF", "Music is off by default.  Can be turned on from Config menu.", "aesthetic"),
     Code('kupokupo', "MOOGLE MODE", "All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.", "aesthetic"),
     Code('llg', "LOW LEVEL GAME MODE", "Stands for Low Level Game. No encounters will yield any Experience Points.", "major"),
     Code('madworld', "TIERS FOR FEARS MODE", 'Creates a "true tierless" seed, with enemies having a higher degree of randomization and shops being very randomized as well.', "major"),
@@ -265,8 +266,7 @@ NORMAL_CODES = [
     Code('thescenarionottaken', 'DIVERGENT PATHS MODE', "Changes the way the 3 scenarios are split up.", "major"),
     Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
     
-    Code('johnnybquiet', "MUSIC DISABLE OPTION", "Music can be turned on/off in the Config menu.  Compatible with other music codes.", "aesthetic"),
-    Code('myriaequip', "ENABLE MYRIA'S PARTY EQUIP", "Enables Myria's new party equip screen. (REQUIRES partyparty OR makeover OR WILL CRASH)", "aesthetic"),
+    Code('myriaequip', "ENABLE MYRIA'S PARTY EQUIP", "Enables Myria's new party equip screen.", "aesthetic"),
 ]
 
 MAKEOVER_MODIFIER_CODES = [

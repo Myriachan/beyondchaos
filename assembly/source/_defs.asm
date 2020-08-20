@@ -185,4 +185,4 @@ constant bank_FF_start                                      = $FF0000
 constant party_gear_extra_start                             = bank_FF_start
 constant party_gear_extra_size                              = $0020
 constant music_disable_FF_start                             = party_gear_extra_start + party_gear_extra_size
-constant music_disable_FF_size                              = $0080
+constant music_disable_FF_size                              = $0100

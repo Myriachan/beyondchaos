@@ -4500,6 +4500,7 @@ def randomize(args):
 
     # Assembly hacks that are always enabled, and library routines.
     apply_asm_patch(fout, "original_name_table")
+    add_music_disable_option(fout)
 
     if options_.is_code_active("thescenarionottaken"):
         diverge(fout)
@@ -4786,8 +4787,13 @@ def randomize(args):
         manage_colorize_animations()
     reseed()
 
+    # johnnybquiet: if enabled, default to music off.
     if options_.is_code_active('johnnybquiet'):
-        add_music_disable_option(fout)
+        johnnybquiet_flag_patch = get_asm_patch("music_disable_option")
+        johnnybquiet_flag_sub = Substitution()
+        johnnybquiet_flag_sub.set_location(johnnybquiet_flag_patch.exports["johnnybquiet_flag"] - HIROM)
+        johnnybquiet_flag_sub.bytestring = b"\x01"
+        johnnybquiet_flag_sub.write(fout)
     reseed()
     
     if options_.is_code_active('myriaequip'):

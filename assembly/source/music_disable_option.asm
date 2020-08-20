@@ -205,6 +205,12 @@ reorg($C34A13)
 	dw $3DA5 + (2 * $40)      // "Single"
 
 
+// Hook initialization of the load screen to possibly disable music.
+reorg($C370C5)
+	// Overwrites two instructions
+	jml load_screen_init_hook
+warnpc($C370CB)
+
 
 reorg($C501A4)
 	jml music_load_hook
@@ -433,7 +439,12 @@ function reset_hook {
 	// We need to do this because config_multiplayer doesn't get cleared
 	// until the file select screen, which is too late for controlling
 	// the music status.
-	stz.w config_multiplayer
+	lda.l johnnybquiet_flag
+	asl
+	asl
+	asl
+	asl
+	sta.w config_multiplayer
 	// We might as well fix a bug in the original game: config_interface2
 	// is being read at C3A436 before it has been initialized.
 	stz.w config_interface2
@@ -441,6 +452,21 @@ function reset_hook {
 	stz.w soundvar_unused
 	// Resume boot sequence.
 	jml $C30006
+}
+
+
+// Called during initialization of the load screen.
+function load_screen_init_hook {
+	// Deleted code.
+	stz.w config_interface
+	// Original code zeroed config_multiplayer.
+	lda.l johnnybquiet_flag
+	asl
+	asl
+	asl
+	asl
+	sta.w config_multiplayer
+	jml $C370CB
 }
 
 
@@ -461,6 +487,10 @@ function party_reorder_hook {
 	// Returns from the function that JMPed to us.
 	rts
 }
+
+// Set to 1 by the randomizer if johnnybquiet is enabled.
+johnnybquiet_flag:
+	db 0
 
 // -- End of FF bank code --
 warnpc(music_disable_FF_start + music_disable_FF_size)
@@ -549,3 +579,8 @@ skip_A6_write:
 }
 architecture wdc65816
 warnpc(akao_engine + $10DF - akao_engine_base)
+
+
+// Tell the randomizer code how to set johnnybquiet.
+start_exports()
+export("johnnybquiet_flag", johnnybquiet_flag)
