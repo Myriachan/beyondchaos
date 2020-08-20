@@ -214,11 +214,12 @@ reorg($C505A6)
 
 
 // Room for added code.
-reorg($C3FA00)
+reorg(music_disable_C3_start)
 
 
 // Called while drawing the cyan labels.
 function draw_option_labels_hook {
+assert_bank($C3)
 	// Draw "Music".
 	ldy.w #music_text
 	jsr.w $C302F9
@@ -234,6 +235,7 @@ music_text:
 
 // Called to update the Music on/off option.
 function update_music_option {
+assert_bank($C3)
 	// Play cursor move sound.
 	jsr.w $C30EA3
 	// Check whether C30EA3 actually played a sound.
@@ -297,6 +299,7 @@ no_change:
 
 // Hooks the call to initially draw the Reset and Memory options.
 function draw_music_on_off_hook {
+assert_bank($C3)
 	// Do our custom drawing.
 	jsr draw_music_on_off
 	// Go to the drawing routine whose call we overwrote.
@@ -306,6 +309,7 @@ function draw_music_on_off_hook {
 
 // Draw the "On" and "Off" options for Music according to the config.
 function draw_music_on_off {
+assert_bank($C3)
 	// Are we muting music?
 	lda.w config_multiplayer
 	lsr
@@ -333,6 +337,12 @@ off_text:
 	db "Off",0
 }
 
+// -- End of C3 bank code --
+warnpc(music_disable_C3_start + music_disable_C3_size)
+
+
+// -- Start of FF bank code --
+reorg(music_disable_FF_start)
 
 // Hooks the music load routine.
 function music_load_hook {
@@ -430,7 +440,7 @@ function reset_hook {
 	// For safety, set the last attempted volume to 0.
 	stz.w soundvar_unused
 	// Resume boot sequence.
-	jmp.w $C30006
+	jml $C30006
 }
 
 
@@ -452,8 +462,9 @@ function party_reorder_hook {
 	rts
 }
 
+// -- End of FF bank code --
+warnpc(music_disable_FF_start + music_disable_FF_size)
 
-warnpc($C3FB00)
 
 
 // SPC700 patch: Fix volume being maximized when unpausing a song.

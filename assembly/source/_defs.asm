@@ -20,6 +20,14 @@ macro exactpc(n) {
 	}
 }
 
+// Error if the bank is not the specified value.
+macro assert_bank(b) {
+	{#}:
+	if ({#} >> 16) != ({b}) {
+		error "bank mismatch"
+	}
+}
+
 // Allows saving the current location and seeking somewhere else.
 macro savepc() {
 	push origin, base
@@ -160,9 +168,17 @@ constant enable_xmagic_menu_start                           = $C3F09B
 constant enable_xmagic_menu_size                            = $0020
 constant auto_equip_start                                   = $C3F1A0
 constant auto_equip_size                                    = $1000
+constant music_disable_C3_start                             = $C3FA00
+constant music_disable_C3_size                              = $00A0
 
 // --- MEMORY MAP - BANK F0 ---
 constant bank_F0_start                                      = $F00000
 constant natmag_learn_start                                 = $F0084B
 constant natmag_learn_size                                  = $00A0 + (2 * 16 * 12)
 
+// --- MEMORY MAP - BANK FF ---
+constant bank_FF_start                                      = $FF0000
+constant party_gear_extra_start                             = bank_FF_start
+constant party_gear_extra_size                              = $0020
+constant music_disable_FF_start                             = party_gear_extra_start + party_gear_extra_size
+constant music_disable_FF_size                              = $0080

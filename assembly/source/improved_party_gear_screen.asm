@@ -129,7 +129,7 @@ nobody:
 warnpc($C38F8A)
 
 
-reorg($FF0000)
+reorg(party_gear_extra_start)
 yellow_palette:
 	rep #$20
 	lda.w #$0000
@@ -141,3 +141,4 @@ yellow_palette:
 	sta.l $7E3049 + (((5 * 16) + 3) * 2)
 	sep #$20
 	rtl
+warnpc(party_gear_extra_start + party_gear_extra_size)
