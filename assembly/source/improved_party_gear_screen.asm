@@ -1,15 +1,24 @@
-
+// On the party gear display screen, display the original character slot name
+// and their equipped esper.  This is similar to the functionality of RotDS,
+// but we add the character slot name for Beyond Chaos since it's useful.
 
 architecture wdc65816
 include "_defs.asm"
 
 
+// We start overwriting from the beginning of the routine to draw party gear.
+// The original code has four subroutines that each do the same thing except
+// read different addresses for the character slots.  This is a waste of space
+// for non-time-critical code.  We can overwrite these four routines by
+// replacing their functionality with a loop.  Note that these four
+// subroutines follow the routine at C38EED, so we can just keep writing.
 reorg($C38F04)
 function party_gear_hack {
 	// Start at first slot.
 	stz.b $28
 	
-	// Initialize extra palette color.
+	// Initialize extra palette color.  The original game doesn't use this
+	// palette for anything in the menu system, so make it yellow.
 	jsl yellow_palette
 
 member_loop:
