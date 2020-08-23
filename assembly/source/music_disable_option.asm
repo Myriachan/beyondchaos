@@ -343,6 +343,24 @@ off_text:
 	db "Off",0
 }
 
+// When the player reorders characters in the menu, the routine at $C324F8
+// swaps the corresponding bits of config_multiplayer so that controls remain
+// the same per character.  This routine doesn't know that we've added a new
+// bit to this byte and blows it away.
+function party_reorder_hook {
+	// We are JMPed to with A = new intended value of config_multiplayer.
+	// Use a stack byte as temporary memory for this calculation.
+	pha
+	lda.w config_multiplayer
+	and.b #$F0
+	ora 1,s
+	sta.w config_multiplayer
+	// Remove value from stack (we don't need to restore A).
+	pla
+	// Returns from the function that JMPed to us.
+	rts
+}
+
 // -- End of C3 bank code --
 warnpc(music_disable_C3_start + music_disable_C3_size)
 
@@ -469,24 +487,6 @@ function load_screen_init_hook {
 	jml $C370CB
 }
 
-
-// When the player reorders characters in the menu, the routine at $C324F8
-// swaps the corresponding bits of config_multiplayer so that controls remain
-// the same per character.  This routine doesn't know that we've added a new
-// bit to this byte and blows it away.
-function party_reorder_hook {
-	// We are JMPed to with A = new intended value of config_multiplayer.
-	// Use a stack byte as temporary memory for this calculation.
-	pha
-	lda.w config_multiplayer
-	and.b #$F0
-	ora 1,s
-	sta.w config_multiplayer
-	// Remove value from stack (we don't need to restore A).
-	pla
-	// Returns from the function that JMPed to us.
-	rts
-}
 
 // Set to 1 by the randomizer if johnnybquiet is enabled.
 johnnybquiet_flag:
