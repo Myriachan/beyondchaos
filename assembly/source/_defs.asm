@@ -94,6 +94,10 @@ macro export(name, value) {
 constant reg_mpyl                                           = $002134
 constant reg_mpym                                           = $002135
 constant reg_mpyh                                           = $002136
+constant reg_apuio0                                         = $002140
+constant reg_apuio1                                         = $002141
+constant reg_apuio2                                         = $002142
+constant reg_apuio3                                         = $002143
 constant reg_wmaddl                                         = $002181
 constant reg_wmaddm                                         = $002182
 constant reg_wmaddh                                         = $002183

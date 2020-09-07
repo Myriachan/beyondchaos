@@ -223,7 +223,7 @@ reorg($C505A6)
 reorg(music_disable_C3_start)
 
 
-// Called while drawing the cyan labels.
+// Called while drawing the cyan labels of the Config screen.
 function draw_option_labels_hook {
 assert_bank($C3)
 	// Draw "Music".
@@ -251,7 +251,7 @@ assert_bank($C3)
 	ldx.w #$1024   // timeout
 	// NOTE: A is already set to $21 if zero flag was clear.
 sound_wait_loop:
-	cmp.l $002140
+	cmp.l reg_apuio0
 	beq done_playing_sound
 	dex
 	bne sound_wait_loop
@@ -318,7 +318,7 @@ function draw_music_on_off {
 assert_bank($C3)
 	// Are we muting music?
 	lda.w config_multiplayer
-	lsr
+	lsr   // moves $10 bit to $08 bit
 	// $20=normal, $28=gray.  Mute -> 28, so use the first one for On.
 	and.b #$08
 	ora.b #$20
@@ -348,6 +348,7 @@ off_text:
 // the same per character.  This routine doesn't know that we've added a new
 // bit to this byte and blows it away.
 function party_reorder_hook {
+assert_bank($C3)
 	// We are JMPed to with A = new intended value of config_multiplayer.
 	// Use a stack byte as temporary memory for this calculation.
 	pha
