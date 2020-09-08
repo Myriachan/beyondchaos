@@ -52,7 +52,7 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, set_randomness_multiplier,
                    mutate_index, utilrandom as random, open_mei_fallback,
-                   AutoLearnRageSub)
+                   AutoLearnRageSub, use_new_asm_storage)
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -4007,6 +4007,9 @@ def randomize(args):
         else:
             normal_args.append(arg)
 
+    # TEMPORARY HACK
+    use_new_asm_storage[0] = use_new_asm
+    
     # Fake arguments for test mode.
     if TEST_ON and len(normal_args) < 2:
         normal_args = [ TEST_FILE, TEST_SEED ]

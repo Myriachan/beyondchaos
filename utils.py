@@ -73,6 +73,7 @@ HIROM = 0xC00000
 NEW_ROM_SIZE = 0x400000
 
 assembly_patches = None
+use_new_asm_storage = [False]
 
 
 def open_mei_fallback(filename, mode='r', encoding=None):

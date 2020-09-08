@@ -162,7 +162,11 @@ constant dp_soundvar_unused                                 = soundvar_unused - 
 constant rng_table                                          = $C0FD00
 constant do_spc_command                                     = $C50004
 constant akao_engine                                        = $C50710
+constant table_swdtech_names                                = $CF3C40
 constant rom_item_data                                      = $D85000
+constant table_spell_names                                  = $E6F567
+constant table_esper_names                                  = $E6F6E1
+constant table_skill_names                                  = $E6F7B9
 
 // --- MEMORY MAP - BANK C3 (unused space from original) ---
 constant bank_C3_start                                      = $C3F091
